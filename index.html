@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Перенаправление в Telegram</title>
+
+  <!-- ===== META PIXEL (FACEBOOK) ===== -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1623261195730360');
+    fbq('track', 'PageView');
+  </script>
+  <noscript>
+    <img height="1" width="1" style="display:none"
+         src="https://www.facebook.com/tr?id=1623261195730360&ev=PageView&noscript=1"/>
+  </noscript>
+  <!-- ===== /META PIXEL ===== -->
+
+  <meta http-equiv="refresh" content="3;url=https://t.me/markitww">
+
+  <style>
+    :root{--bg:#0f1724;--card:#0b1220;--accent:#2ea44f;--muted:#9aa6b2}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui}
+    body{display:flex;align-items:center;justify-content:center;
+         background:linear-gradient(180deg,#071127 0%, #0b1630 100%);color:#fff}
+    .card{background:rgba(255,255,255,0.03);padding:28px;border-radius:14px;
+          box-shadow:0 10px 30px rgba(2,6,23,0.6);max-width:460px;width:92%;text-align:center}
+    h1{margin:0 0 8px;font-size:20px}
+    p{margin:0 0 18px;color:var(--muted)}
+    .btn{display:inline-block;padding:12px 18px;border-radius:10px;background:var(--accent);
+         color:#042016;font-weight:600;text-decoration:none}
+    .small{font-size:13px;color:var(--muted);margin-top:12px}
+    .link{color:#9fd6b3;text-decoration:underline}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Открываем профиль в Telegram</h1>
+    <p>Если у вас установлен Telegram — приложение откроется автоматически.</p>
+
+    <a id="openBtn" class="btn" href="https://t.me/markitww">Открыть в Telegram</a>
+
+    <div class="small">
+      Если автопереход не сработал:
+      <br>
+      <a id="rawLink" class="link" href="https://t.me/markitww" target="_blank">https://t.me/markitww</a>
+    </div>
+  </div>
+
+<script>
+  const username = 'markitww';
+  const tgUri = 'tg://resolve?domain=' + encodeURIComponent(username);
+  const webUrl = 'https://t.me/' + encodeURIComponent(username);
+
+  const openBtn = document.getElementById('openBtn');
+  const rawLink = document.getElementById('rawLink');
+
+  openBtn.href = webUrl;
+  rawLink.href = webUrl;
+
+  // === Facebook Pixel: отслеживание клика ===
+  openBtn.addEventListener('click', () => {
+    if (typeof fbq === "function") {
+      fbq('track', 'ClickToTelegram');
+    }
+  });
+
+  // === Автопопытка открытия tg:// ===
+  setTimeout(() => {
+    window.location.href = tgUri;
+  }, 500);
+</script>
+
+</body>
+</html>
