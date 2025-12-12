@@ -5,26 +5,35 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Перенаправление в Telegram</title>
 
-  <!-- ===== META PIXEL (FACEBOOK) ===== -->
   <script>
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '1623261195730360');
-    fbq('track', 'PageView');
-  </script>
-  <noscript>
-    <img height="1" width="1" style="display:none"
-         src="https://www.facebook.com/tr?id=1623261195730360&ev=PageView&noscript=1"/>
-  </noscript>
-  <!-- ===== /META PIXEL ===== -->
+    /* =============================================
+       1) ТУТ ВПИСЫВАЕШЬ СВОЙ PIXEL ID
+       ============================================= */
+    const PIXEL_ID = 'ВАШ_ПИКСЕЛЬ_ЗДЕСЬ';
 
-  <meta http-equiv="refresh" content="3;url=https://t.me/markitww">
+    /* =============================================
+       2) ТУТ ВПИСЫВАЕШЬ СВОЙ TELEGRAM USERNAME
+          (ТОЛЬКО НИК, БЕЗ https://t.me/)
+       ============================================= */
+    const TELEGRAM_USERNAME = 'tg';
+    /* ============================================= */
+
+    // Запуск Meta Pixel, если указан ID
+    if (PIXEL_ID) {
+      !(function(f,b,e,v,n,t,s){
+        if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)
+      })(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+
+      fbq('init', PIXEL_ID);
+      fbq('track', 'PageView');
+    }
+  </script>
 
   <style>
     :root{--bg:#0f1724;--card:#0b1220;--accent:#2ea44f;--muted:#9aa6b2}
@@ -46,37 +55,48 @@
     <h1>Открываем профиль в Telegram</h1>
     <p>Если у вас установлен Telegram — приложение откроется автоматически.</p>
 
-    <a id="openBtn" class="btn" href="https://t.me/markitww">Открыть в Telegram</a>
+    <a id="openBtn" class="btn">Открыть в Telegram</a>
 
     <div class="small">
       Если автопереход не сработал:
       <br>
-      <a id="rawLink" class="link" href="https://t.me/markitww" target="_blank">https://t.me/markitww</a>
+      <a id="rawLink" class="link" target="_blank"></a>
     </div>
   </div>
 
 <script>
-  const username = 'markitww';
-  const tgUri = 'tg://resolve?domain=' + encodeURIComponent(username);
-  const webUrl = 'https://t.me/' + encodeURIComponent(username);
+  // Формируем ссылки на основе TELEGRAM_USERNAME
+  const webUrl = 'https://t.me/' + TELEGRAM_USERNAME;
+  const tgUri = 'tg://resolve?domain=' + TELEGRAM_USERNAME;
 
   const openBtn = document.getElementById('openBtn');
   const rawLink = document.getElementById('rawLink');
 
   openBtn.href = webUrl;
   rawLink.href = webUrl;
+  rawLink.textContent = webUrl;
 
-  // === Facebook Pixel: отслеживание клика ===
+  // Клик — TelegramClick
   openBtn.addEventListener('click', () => {
-    if (typeof fbq === "function") {
-      fbq('track', 'ClickToTelegram');
+    if (PIXEL_ID && typeof fbq === "function") {
+      fbq('trackCustom', 'TelegramClick');
     }
   });
 
-  // === Автопопытка открытия tg:// ===
+  // Автопереход tg://
   setTimeout(() => {
+    if (PIXEL_ID && typeof fbq === "function") {
+      fbq('trackCustom', 'AutoRedirectTelegram');
+    }
     window.location.href = tgUri;
   }, 500);
+
+  // Задержка 2 сек — PageStay
+  setTimeout(() => {
+    if (PIXEL_ID && typeof fbq === "function") {
+      fbq('trackCustom', 'PageStay');
+    }
+  }, 2000);
 </script>
 
 </body>
